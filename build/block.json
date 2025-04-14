@@ -1,0 +1,15 @@
+{
+  "apiVersion": 2,
+  "name": "rf/faq",
+  "title": "FAQ",
+  "category": "widgets",
+  "icon": "editor-help",
+  "description": "A container for FAQ items.",
+  "supports": {
+    "html": false
+  },
+  "editorScript": "file:../build/index.js",
+  "editorStyle": "file:../build/index.css",
+  "style": "file:../build/style-index.css",
+  "textdomain": "rf-faq"
+}

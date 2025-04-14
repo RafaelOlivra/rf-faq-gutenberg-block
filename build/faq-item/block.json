@@ -1,0 +1,24 @@
+{
+  "apiVersion": 2,
+  "name": "rf/faqitem",
+  "title": "FAQ Item",
+  "category": "widgets",
+  "icon": "format-status",
+  "parent": [
+    "rf/faq"
+  ],
+  "description": "A single FAQ question and answer.",
+  "attributes": {
+    "question": {
+      "type": "string",
+      "source": "html",
+      "selector": ".faq-title"
+    },
+    "answer": {
+      "type": "string",
+      "source": "html",
+      "selector": ".faq-answer"
+    }
+  },
+  "textdomain": "rf-faq"
+}

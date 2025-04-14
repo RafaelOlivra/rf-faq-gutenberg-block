@@ -1,0 +1,7 @@
+**/*.min.js
+**/node_modules/**
+**/vendor/**
+coverage
+cypress
+node_modules
+vendor
