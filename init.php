@@ -46,7 +46,7 @@ add_action('init', 'rf_create_block_faq_block_init');
  */
 function rf_render_faq_block($attributes, $content, $block)
 {
-    $class        = isset($attributes['className']) ? $attributes['className'] : '';
+    $class        = trim(($attributes['className'] ?? ''));
     $inner_blocks = $block->parsed_block['innerBlocks'] ?? [];
     $items_output = '';
 
@@ -58,6 +58,15 @@ function rf_render_faq_block($attributes, $content, $block)
         $item_attrs = $faq_item['attrs'] ?? [];
         $question   = trim(wp_strip_all_tags($item_attrs['question'] ?? ''));
         $answer     = wp_kses_post($item_attrs['answer'] ?? '');
+        $item_html  = $faq_item['innerHTML'] ?? '';
+
+        if (! $question && preg_match('/<p\b(?=[^>]*\bclass=("|\')[^"\']*\bfaq-title\b[^"\']*\1)[^>]*>(.*?)<\/p>/is', $item_html, $matches)) {
+            $question = trim(wp_strip_all_tags($matches[2]));
+        }
+
+        if (! $answer && preg_match('/<div\b(?=[^>]*\bclass=("|\')[^"\']*\bfaq-answer\b[^"\']*\1)[^>]*>(.*?)<\/div>/is', $item_html, $matches)) {
+            $answer = wp_kses_post($matches[2]);
+        }
 
         if (! $question && ! $answer) {
             continue;
