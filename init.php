@@ -47,6 +47,7 @@ add_action('init', 'rf_create_block_faq_block_init');
 function rf_render_faq_block($attributes, $content, $block)
 {
     $class        = trim(($attributes['className'] ?? ''));
+    $enable_schema = ! empty($attributes['enable_faq_schema']) ? 'enable' : '';
     $inner_blocks = $block->parsed_block['innerBlocks'] ?? [];
     $items_output = '';
 
@@ -73,14 +74,14 @@ function rf_render_faq_block($attributes, $content, $block)
         }
 
         $title = urlencode($question);
-        $items_output .= "[ac_item title='{$title}']{$answer}[/ac_item]";
+        $items_output .= "[ac_item title='{$title}' enable_faq_schema='{$enable_schema}']{$answer}[/ac_item]";
     }
 
     if (! $items_output) {
         return '';
     }
 
-    return do_shortcode("[accordion class='" . esc_attr($class) . "']" . $items_output . '[/accordion]');
+    return do_shortcode("[accordion class='" . esc_attr($class) . "' enable_faq_schema='{$enable_schema}']" . $items_output . '[/accordion]');
 }
 
 /**

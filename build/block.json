@@ -5,6 +5,12 @@
   "category": "widgets",
   "icon": "editor-help",
   "description": "A container for FAQ items.",
+  "attributes": {
+    "enable_faq_schema": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "supports": {
     "html": false
   },
