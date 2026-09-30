@@ -28,10 +28,10 @@ if (! defined('ABSPATH')) {
  */
 function rf_create_block_faq_block_init()
 {
-    register_block_type(__DIR__ . '/src/', [
+    register_block_type(__DIR__ . '/build/', [
         'render_callback' => 'rf_render_faq_block',
     ]);
-    register_block_type(__DIR__ . '/src/faq-item/');
+    register_block_type(__DIR__ . '/build/faq-item/');
 }
 add_action('init', 'rf_create_block_faq_block_init');
 
