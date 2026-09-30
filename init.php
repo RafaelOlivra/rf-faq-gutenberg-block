@@ -28,11 +28,51 @@ if (! defined('ABSPATH')) {
  */
 function rf_create_block_faq_block_init()
 {
-    register_block_type(__DIR__ . '/src/');
+    register_block_type(__DIR__ . '/src/', [
+        'render_callback' => 'rf_render_faq_block',
+    ]);
     register_block_type(__DIR__ . '/src/faq-item/');
 }
 add_action('init', 'rf_create_block_faq_block_init');
 
+/**
+ * Renders the FAQ block by converting its FAQ items into the theme's
+ * [accordion]/[ac_item] shortcodes, so the front-end output (and behavior)
+ * matches the shortcode-based accordion exactly.
+ *
+ * @param array    $attributes The block attributes.
+ * @param string   $content    The default block content (unused).
+ * @param WP_Block $block      The block instance.
+ */
+function rf_render_faq_block($attributes, $content, $block)
+{
+    $class        = isset($attributes['className']) ? $attributes['className'] : '';
+    $inner_blocks = $block->parsed_block['innerBlocks'] ?? [];
+    $items_output = '';
+
+    foreach ($inner_blocks as $faq_item) {
+        if (($faq_item['blockName'] ?? '') !== 'rf/faqitem') {
+            continue;
+        }
+
+        $item_attrs = $faq_item['attrs'] ?? [];
+        $question   = trim(wp_strip_all_tags($item_attrs['question'] ?? ''));
+        $answer     = wp_kses_post($item_attrs['answer'] ?? '');
+
+        if (! $question && ! $answer) {
+            continue;
+        }
+
+        $title = urlencode($question);
+        $items_output .= "[ac_item title='{$title}']{$answer}[/ac_item]";
+    }
+
+    if (! $items_output) {
+        return '';
+    }
+
+    return do_shortcode("[accordion class='" . esc_attr($class) . "']" . $items_output . '[/accordion]');
+}
 
 /**
  * Adds FAQ schema to the FAQ block.
@@ -54,7 +94,7 @@ function rf_add_faq_schema_to_custom_faq_block($block_content, $block)
 
     if (! empty($block['innerBlocks'])) {
         foreach ($block['innerBlocks'] as $faq_item) {
-            if ($faq_item['blockName'] === 'rf/faqItem') {
+            if ($faq_item['blockName'] === 'rf/faqitem') {
                 $question = wp_strip_all_tags($faq_item['attrs']['question'] ?? '');
                 $answer   = wp_kses_post($faq_item['attrs']['answer'] ?? '');
 
