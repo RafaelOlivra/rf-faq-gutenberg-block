@@ -16,14 +16,16 @@ export default function Edit({ attributes, setAttributes }) {
                 value={question}
                 onChange={(value) => setAttributes({ question: value })}
             />
-            <RichText
-                tagName="div"
-                className="holder faq-answer"
-                placeholder={__("Enter answer…", "rf-faq")}
-                multiline="p"
-                value={answer}
-                onChange={(value) => setAttributes({ answer: value })}
-            />
+            <div className="holder faq-answer">
+                <RichText
+                    tagName="div"
+                    className=""
+                    placeholder={__("Enter answer…", "rf-faq")}
+                    multiline="p"
+                    value={answer}
+                    onChange={(value) => setAttributes({ answer: value })}
+                />
+            </div>
         </div>
     );
 }
