@@ -60,6 +60,13 @@ function rf_render_faq_block($attributes, $content, $block)
         $question   = trim(wp_strip_all_tags($item_attrs['question'] ?? ''));
         $answer     = wp_kses_post($item_attrs['answer'] ?? '');
         $item_html  = $faq_item['innerHTML'] ?? '';
+        if (!empty($faq_item['innerBlocks'])) {
+            $answer = '';
+            foreach ($faq_item['innerBlocks'] as $answer_block) {
+                $answer .= render_block($answer_block);
+            }
+            $answer = wp_kses_post($answer);
+        }
 
         if (! $question && preg_match('/<p\b(?=[^>]*\bclass=("|\')[^"\']*\bfaq-title\b[^"\']*\1)[^>]*>(.*?)<\/p>/is', $item_html, $matches)) {
             $question = trim(wp_strip_all_tags($matches[2]));
@@ -107,6 +114,13 @@ function rf_add_faq_schema_to_custom_faq_block($block_content, $block)
             if ($faq_item['blockName'] === 'rf/faqitem') {
                 $question = wp_strip_all_tags($faq_item['attrs']['question'] ?? '');
                 $answer   = wp_kses_post($faq_item['attrs']['answer'] ?? '');
+                if (!empty($faq_item['innerBlocks'])) {
+                    $answer = '';
+                    foreach ($faq_item['innerBlocks'] as $answer_block) {
+                        $answer .= render_block($answer_block);
+                    }
+                    $answer = wp_kses_post($answer);
+                }
 
                 if ($question && $answer) {
                     $schema['mainEntity'][] = [

@@ -13,11 +13,6 @@
 			"type": "string",
 			"source": "html",
 			"selector": ".faq-title"
-		},
-		"answer": {
-			"type": "string",
-			"source": "html",
-			"selector": ".faq-answer"
 		}
 	},
 	"textdomain": "rf-faq"

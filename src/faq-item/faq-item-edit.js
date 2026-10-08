@@ -1,8 +1,8 @@
-import { RichText, useBlockProps } from "@wordpress/block-editor";
+import { InnerBlocks, RichText, useBlockProps } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
 
 export default function Edit({ attributes, setAttributes }) {
-    const { question, answer } = attributes;
+    const { question } = attributes;
     const blockProps = useBlockProps({
         className: "faq-item item accordion opened",
     });
@@ -17,13 +17,10 @@ export default function Edit({ attributes, setAttributes }) {
                 onChange={(value) => setAttributes({ question: value })}
             />
             <div className="holder faq-answer">
-                <RichText
-                    tagName="div"
-                    className=""
-                    placeholder={__("Enter answer…", "rf-faq")}
-                    multiline="p"
-                    value={answer}
-                    onChange={(value) => setAttributes({ answer: value })}
+                <InnerBlocks
+                    allowedBlocks={["core/paragraph", "core/list", "core/image"]}
+                    template={[["core/paragraph", { placeholder: __("Enter answer…", "rf-faq") }]]}
+                    templateLock={false}
                 />
             </div>
         </div>
